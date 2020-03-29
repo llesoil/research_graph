@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<meta charset="utf-8"/>
+    <head>
+
+        <title>Diverse Research graph</title>
+
+        <style type="text/css">
+            html, body {
+                font: 16pt arial;
+            }
+    
+            #viz {
+                width: 2000px;
+                height: 1400px;
+                border: 1px solid lightgray;
+                font: 28pt arial;
+            }
+        </style>
+
+	<script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+
+	<script type="text/javascript">
+
+        var viz;
+
+        function draw() {
+            var config = {
+                container_id: "viz",
+                server_url: "bolt://localhost:11002",
+                server_user: "neo4j",
+                server_password: "diverse",
+                labels: {
+                        "Author": {
+                        "caption": "id",
+                        "size": "size",
+                    },
+                        "Paper": {
+                         "caption": "title",
+                         "color": "blue"}
+                    },
+                relationships: {
+                       "Wrote": {
+                       "caption": false
+                    }
+                },
+                initial_cypher: "MATCH p=(a:Author)-[r:Wrote]->() where a.diverse >0 RETURN p LIMIT 2500"
+            };
+
+            viz = new NeoVis.default(config);
+            viz.render();
+        }
+    </script>
+
+    </head>
+
+    <body onload="draw()">
+
+        <div id="viz"></div>
+
+    </body>    
+</html>
