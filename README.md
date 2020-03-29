@@ -148,6 +148,8 @@ All the requests are in the cypher file (neo4j/neo4j_requests.cypher).
 
 ## Neovis
 
+See the project [here.](https://github.com/neo4j-contrib/neovis.js/)
+
 If you want to embed your graph in a html page, just modify the html pages paper_graph.html and kwords_graph.html.
 
 Replace the server port, the server user and the server password by yours.
@@ -157,3 +159,10 @@ If it works, the two webpages should respectively show the following graphs:
 ![alt text](neovis_paper.png)
 
 ![alt text](neovis_kwords.png)
+
+
+Drawbacks:
+- A neo4j server should always run in background
+- The pages are slow to load, maybe we have to remove the old papers.
+- The design of neovis is not exactly the same as neo4j
+- for the moment, we have to update the graph manually (not automatic with every paper published in hal)
