@@ -4,14 +4,14 @@ Explaining your research topic is often difficult. And sometimes, you could use 
 
 Here, we try to study the research papers stored in [Hal](https://hal.archives-ouvertes.fr/) with the [neo4j](https://neo4j.com/) No SQL database manager.
 
-For an example, here is a screenshot of the graph of the papers written the [DiverSE](https://www.diverse-team.fr/) research team:
+For an example, here is a screenshot of the graph of the papers written by the [DiverSE](https://www.diverse-team.fr/) research team:
 
 ![alt text](./neo4j/neo4j_desktop.png)
 
-The red nodes represents the researchers, and the orange nodes the research papers written.
+The red nodes represent the researchers, and the orange nodes the research papers.
 If someone of the team wrote the paper (or is one of the co-authors), we establish a link (the arrows) between the node of the researcher and the node of the paper.
 
-And we can show the same graph with the authors and the keywords relative to the paper.
+And we can show the same graph with the authors and the keywords related to the paper.
 
 ## Install 
 
@@ -43,11 +43,11 @@ To get the raw_data, just use this [link](https://api.archives-ouvertes.fr/searc
 https://api.archives-ouvertes.fr/search/?q=structId_i:(2539%20||%20491189)&wt=json&fl=title_s&fl=authFullName_s&fl=journalTitle_s &conferenceTitle_s&fl=producedDate_s&fl=en_keyword_s&fl=doiId_s&rows=9999
 
 Some important fields:
-- structId is the id of your team
+- structId is the id of your team (ofr multiple teams, use ||)
 - authFullName_s is the full name (first + last names) of the authors of the paper. Be careful if you use the authId field, most of researchers have many instances of themselves on Hal. It's easier to detect the duplicates with this field.
-- en_keyword_s are the keywords related to the papers
+- en_keyword_s are the keywords related to the paper
 - producedDate_s is the date of publication of the paper
-- rows are the maximal number of lines of the json response. 
+- rows are the maximal number of lines of the json response 
 
 Modify the fields to get the content you want, and export the response in the export.json file (neo4j/paper/export.json).
 To get rid of the duplicates names, I created a mapping.csv file; the hal names are in the left column, and you want to replace their values by the names in the right column.
@@ -81,7 +81,7 @@ If you are working on another team than DiverSE, you will have to create the aut
 
 export all the nodes in the file records.json (neo4j/author/records.json), and modify the file properties.csv:
 - name for the researcher's names
-- diverse is equal to 1 if the researcher is part of your team (it could be a researcher working with your team, but not part of it)
+- diverse is equal to 1 if the researcher is part of your team, or 0 for a researcher working with your team, but not part of it
 - size is the future size of the node. For my team, I displayed the phd student in size 1, the postdoc/graduated phd in size 2, and the permanent member of the team in size 5.
 
 Apply the python script update_script.py
@@ -154,15 +154,22 @@ If you want to embed your graph in a html page, just modify the html pages paper
 
 Replace the server port, the server user and the server password by yours.
 
-If it works, the two webpages should respectively show the following graphs:
+If it works, the two webpages should respectively show the two following graphs:
 
 ![alt text](neovis_paper.png)
 
 ![alt text](neovis_kwords.png)
 
+Advantages:
+- It's nice to show on a website
+- You can identify the main areas of interest of a team
 
 Drawbacks:
 - A neo4j server should always run in background
 - The pages are slow to load, maybe we have to remove the old papers.
 - The design of neovis is not exactly the same as neo4j
-- for the moment, we have to update the graph manually (not automatic with every paper published in hal)
+
+Todo:
+- For the moment, we have to update the graph manually (not automatic with every paper published in hal)
+- Add some information about the team members? Add some team members that I don't know?
+- Polish the final results
